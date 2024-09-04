@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+  <!-- Page Header -->
+  <header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>{{ post_type }}</h1>
+            <span class="subheading">Start Contributing to the Blog!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+          <!-- This is where the form will go -->
+        <form method="post" novalidate >
+          {% csrf_token %}
+          {% for field in form %}
+            <div class="form-group  required">
+              {{field.label_tag}}
+              {{ field }}
+              {{field.errors}}
+            </div>
+          {% endfor %} 
+          <input class="btn btn-primary" id="submit" name="submit" type="submit" value="Register!">
+        <form>
+      </div>
+    </div>
+  </div>
+
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Page Header -->
+<header class="masthead" style="background-image: url('{{post.img_url.url}}')">
+	<div class="overlay"></div>
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 col-md-10 mx-auto">
+				<div class="post-heading">
+					<h1>{{post.title|title}}</h1>
+					<h2 class="subheading">{{post.subtitle|title}}</h2>
+					<span class="meta">Posted by
+              <a href="{% url 'about' %}">{{post.author}}</a>
+              on {{post.date}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Post Content -->
+  <article>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <p>
+            {{post.content|safe}}
+          </p>
+           <hr>
+          {% if user.id == 1  %}
+            <div class="clearfix">
+              <a class="btn btn-primary float-right" href="{% url 'update' post.slug %}">Edit Post</a>
+            </div>
+          {% endif %}
+          <hr>
+          <form method="post" class="form" novalidate >
+            {% csrf_token %}
+            <div class="form-group  required">
+              {{ form.comment_details.label_tag }}
+              {{form.comment_details}}
+              {{ form.comment_details.errors }}
+
+            </div>
+            {% if user.is_authenticated  %}
+            <input class="btn btn-primary" id="submit" name="submit" type="submit" value="Submit comment">
+            {% else %}
+              <div class="clearfix">
+                <a class="btn btn-primary float-right" href="{% url 'login' %}">submit comment</a>
+              </div>
+            {% endif %}
+          </form>
+        <!--   Comments Area -->
+         <div class="col-lg-8 col-md-10 mx-auto comment">
+            <ul class="commentList">
+                {% for detail in comments %}
+                    <li>
+                         <div class="commenterImage">
+                             <img src="{{ detail.comment_author.profile.picture.url }}" />
+                             
+                        </div>
+                        <div class="commentText">
+                            <p>{{ detail.comment_details|safe }}</p>
+                            <span class="date sub-text">{{ detail.comment_author.username}}</span>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul> 
+        </div>
+      </div>
+    </div>
+  </article>
+
+  
+  {% endblock content %}
+
+  {% comment %} <div class="col-lg-8 col-md-10 mx-auto comment">
+    <ul class="commentList">
+        {% for detail in comments %}
+            <li>
+                 <div class="commenterImage">
+                     <img src="{{ detail.user_comments.email | gravatar }}"/>
+                </div>
+                <div class="commentText">
+                    <p>{{ detail.comment|safe }}</p>
+                    <span class="date sub-text">{{ detail.user_comments.name}}</span>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div> {% endcomment %}

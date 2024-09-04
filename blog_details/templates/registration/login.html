@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+  <!-- Page Header -->
+  <header class="masthead">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>Log in</h1>
+            <span class="subheading">Welcome Back!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+          <!-- This is where the form will go -->
+        <form method="post" enctype="multipart/form-data" novalidate >
+          {% csrf_token %}
+          {% for field in form %}
+          <div class="form-group  required">
+            {{field.label_tag}}
+            {{field}}
+            {{field.errors}}
+          </div>
+          {% endfor %}
+          <input type="hidden" value="{{ next }}" name='next'>
+          <input class="btn btn-primary" id="submit" name="submit" type="submit" value="LET ME IN!">
+        </form>
+        <ul>
+          <li>
+            <a href="{% url 'social:begin' 'facebook' %}" style="background-color: blue; color: white; padding: 10px; text-decoration: none;" class="btn">
+              Login with Facebook
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'social:begin' 'google-oauth2' %} " style="background-color: red; color: white; padding: 10px; text-decoration: none;" class="btn">
+              Login with Google
+            </a>
+          </li>
+        </ul>
+
+          <div><a href="{% url 'password_reset' %}" >Forgotten password?</a></div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
